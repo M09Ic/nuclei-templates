@@ -17,8 +17,9 @@ requests:
         POST /console/j_security_check HTTP/1.1
         Host: {{Hostname}}
         Content-Type: application/x-www-form-urlencoded
+        Referer: {{BaseURL}}/console/login/LoginForm.jsp
 
-        j_username={{ username }}&j_password={{ password }}&j_character_encoding=UTF-8
+        j_username={{username}}&j_password={{password}}&j_character_encoding=UTF-8
 
     attack: pitchfork
     payloads:
@@ -38,7 +39,7 @@ requests:
         - welcome1
         - Oracle@123
         - weblogic123
-        - 12345678
+        - '12345678'
         - security
         - password
 
@@ -49,8 +50,14 @@ requests:
       - type: word
         part: header
         words:
-          - "/console/index.jsp"
           - "ADMINCONSOLESESSION"
+        condition: and
+
+      - type: word
+        part: header
+        negative: true
+        words:
+          -  LoginForm.jsp
         condition: and
 
       - type: status
